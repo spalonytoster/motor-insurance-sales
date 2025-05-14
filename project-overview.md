@@ -34,7 +34,63 @@ Every type of user has certain needs but we also decide what functionalities or 
 # Architecture
 Focused on clear module boundaries that will assure consistent long-term development velocity and ability to scale independently if this product brings more revenue to the table. 
 
+# Modules / Sub-domains
+Modules are designed around business capabilities.
 
+## Product Configuration
+Built around risk assessment and fitting future offerings to particular customer needs.
+Consequence of every product configuration change is new form definition that frontend will render for user to interact with.
+
+Example:
+We want to get information about vehicle usage to properly calculate risk (possibility of creating a claim).
+In order to do this, we could directly ask if the customer is driving safely and responsibly or recklessly and aggressively.
+We bet that almost every client would answer they drive safely. They would anticipate higher price for insurance if they answered otherwise. 
+
+On the other side we could ask if customer has children and what age are the children.
+That is because if the customer has children with age below 14 years old he is more probable to drive safely. Otherwise if customer has no children and is of age up to 25 years old he might be driving recklessly and effectively create damage to other vehicle (generate claim and we have to pay for the damages).
+
+With its analytics it is able to:
+1. Inform about conversion rates for particular product configurations (e.g. configuration with question about driving style versus question about children). This will be a killer feature for my business since I will get clear insights on what strategies of data procurement yield more profits.
+
+### Forms Definitions
+Schema for forms' UI that is being rendered on the frontend app.
+Such form is used to procure all data needed for:
+1. Risk assessment during quotation (using tarrification/pricing module).
+2. Offering adjustment. Suggesting recommended insurance options for particular customer.
+
+Filled form is used as an input for Offering Module.
+
+## Data enrichment / data transformation
+It's a pipe or a transformer that takes initial context and filled form as input and return output after querying external databases and services. Output from this module is input for Offering module that is needed to calculate price.
+E.g. form asks user to fill in the VIN number, but underneath we query 3rd party services about this VIN number and get insigts about this vehicle to properly assess risks.
+
+This module needs to be able to run transformation rules partially or in isolation and aggregate deeper context and knowledge. Representation of such context accumulation needs to be available to forms since they are dynamic and contextual.
+E.g if customer is an organization we run query to government services by the taxpayer identification number and if response reveals something shady about this organization, we would need to ask more questions to mitigate risks while still be able to create an offering to the customer. It means that some questions are conditional of some data transformations.
+
+## Offering
+Model of all available options, additional insurances, additional options for chosen insurances.
+This model is designed to be interacted with. It awaits changes in insurance scope to inform about price changes and benefits of such changes. It is the heart of this product's sales and intelligent advisor for insurance agents, insurer's call center employees or direct customers.
+
+Offering model is able to answer questions like:
+1. What will be the price if I take this additional insurance?
+2. What will be the price if I take this additional risk to this insurance?
+3. What will be the price if I change risk sum for this particular risk?
+4. What would be optimal insurance scope for this customer or what would be such customer eager to buy?
+   - Disclaimer: it would need additional data about client segmentation and/or scoring. E.g. if we have knowledge that this customer has history of insuring vehicles with notable value or that customer already has several insurances for his estates, then we have a clear insight that this might be a wealthy customer who will prioritize more protection and larger insurance sums despite higher price.
+
+Offering model collects all data of its sales and runs analytics over the data to gain insights with which it is able to give such recommendations:
+1. 80% of customers that bought this isurance, also added this option to get optimal protection.
+2. 70% of customers that were insuring a vehicle of this class (based on vehicle worth) were happy with these options to get optimal protection.
+
+## Checkout
+Checkout module is the finalization of sales. Getting to this stage means customer has accepted the offering - isurance scope, terms, chose all interesting options and is now ready to finalize transaction (pay for his insurance). 
+
+At this stage we:
+1. Gather additional data for after-sales care and operations. We pass this information to core policy system.
+2. Handle the payment.
+3. Print insurance policy documents.
+   - We use existing, external module for this.
+4. Gather agreements for marketing contact.
 
 ---
 
