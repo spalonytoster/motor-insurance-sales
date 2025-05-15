@@ -39,12 +39,23 @@ Every type of user has certain needs but we also decide what functionalities or 
 - Each module will have its own database schema, but not own database. This level of isolation brings more cohesion between modules and still enables us to extract to separate databases in the future.
 
 ## System's limitations and its environment
-1. Our most significant limitation is upstream core policy management system called TIA. 
+### TIA - Core Policy Management System
+Our most significant limitation is upstream core policy management system called TIA.
+
    - Technically it's Oracle DBMS.
    - It owns a large part of product's logic in its PL/SQL code including. It serves as an application layer.
    - It owns partial configuration of the product, dictionaries that have enumerations of customer types, vehicle types, vehicle configurations including makes and models.
    - It serves as a proxy to the pricing engine, Earnix.
    - We integrate directly with this Oracle database as it is our **core policy management system** called "TIA", but we don't directly integrate with Earnix. TIA does it on our behalf when given particular action to execute eg. "calculateQuotation".
+
+### 3rd party services
+1. UFG - Ubezpieczeniowy Fundusz Gwarancyjny. Polish financial and insurance regulator's API service which provides claims history or insurance status of vehicles.
+2. CEPiK - Centralna Ewidencja Pojazdów i Kierowców.
+   - API service providing information about:
+     - Vehicles data, vehicle history vehicle ownership
+     - Driver's data, driver's penalty points, driver licenses
+   - Owned by Polish government.
+3. GUS - Główny Urząd Statystyczny. API service providing information about organizations in Poland. It is needed during sales for when customer is organizational. We check credibility of such organization and its business profile to check if vehicles won't be used for risky operations e.g. people transportation. Risk is then much higher than using such vehicle for daily commute.  
 
 ## Modules / Sub-domains
 Modules are designed around business capabilities.

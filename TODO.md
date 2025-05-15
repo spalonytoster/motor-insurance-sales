@@ -1,2 +1,2 @@
 # TODO
-1. Document domain language and events
+1. Document domain language and domain vents
