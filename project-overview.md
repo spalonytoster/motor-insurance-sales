@@ -4,11 +4,11 @@
 This is an IT project for insurance company that is under digital transformation.
 Aim of this project is to rewrite existing legacy MOTOR insurance calculator (sales tool) to new tech stack. Product is now long time on the market and with deep knowledge of this business due to its' history might be able to redesign system's architecture for a lot more alignment with business needs and company's strategy.
 
-## System users
+# System users
 Users of this system are insurance agents, insurer's call center internal employees and direct clients.
 Every type of user has certain needs but we also decide what functionalities or what data are available to which user types. For example only call center employee is able to see into claims history of customer, his driving records and customer segmentation insights. Since insurance agents are not insurer's direct employees hence they are not allowed to get such insights (otherwise they could potentially sell those data to 3rd parties). Customer is the most limited in this matter as customers are not regulated by any means compared to insurance agents.
 
-## Business requirements
+# Business requirements
 1. Ability to get data from user via form. We ask questions that will give answers that can be split into two groups:
    1. Underwriting and offering recommendation. They will be input data for underwriting rules (risk calculation) or insurance options recommendation (fitting offering to customer needs, segmentation, buying history etc.). 
    2. Operational information. E.g. name and surname. This information are not part of underwriting rules itself. We need them to have customer record and to know who to contact and address in our communications. On the contrary, customer's age is needed for underwriting and would be assigned to the first group.
@@ -32,12 +32,24 @@ Every type of user has certain needs but we also decide what functionalities or 
 15. Module that handles form with questions needs to be highly configurable since this changes frequently. Tariff team often comes up with suggestions on new strategies to ask smart questions that give us insights for risk assessment.
 
 # Architecture
-Focused on clear module boundaries that will assure consistent long-term development velocity and ability to scale independently if this product brings more revenue to the table. 
+## General assumptions
+- Focused on clear module boundaries. Separation around business capabilities. That will assure consistent long-term development velocity and ability to scale independently if this product brings more revenue to the table.
+  - You could pretty much say it's aligned with Domain-Driven Design.
+- Integration patterns are 
+- Each module will have its own database schema, but not own database. This level of isolation brings more cohesion between modules and still enables us to extract to separate databases in the future.
 
-# Modules / Sub-domains
+## System's limitations and its environment
+1. Our most significant limitation is upstream core policy management system called TIA. 
+   - Technically it's Oracle DBMS.
+   - It owns a large part of product's logic in its PL/SQL code including. It serves as an application layer.
+   - It owns partial configuration of the product, dictionaries that have enumerations of customer types, vehicle types, vehicle configurations including makes and models.
+   - It serves as a proxy to the pricing engine, Earnix.
+   - We integrate directly with this Oracle database as it is our **core policy management system** called "TIA", but we don't directly integrate with Earnix. TIA does it on our behalf when given particular action to execute eg. "calculateQuotation".
+
+## Modules / Sub-domains
 Modules are designed around business capabilities.
 
-## Product Configuration
+### Product Configuration
 Built around risk assessment and fitting future offerings to particular customer needs.
 Consequence of every product configuration change is new form definition that frontend will render for user to interact with.
 
@@ -47,12 +59,12 @@ In order to do this, we could directly ask if the customer is driving safely and
 We bet that almost every client would answer they drive safely. They would anticipate higher price for insurance if they answered otherwise. 
 
 On the other side we could ask if customer has children and what age are the children.
-That is because if the customer has children with age below 14 years old he is more probable to drive safely. Otherwise if customer has no children and is of age up to 25 years old he might be driving recklessly and effectively create damage to other vehicle (generate claim and we have to pay for the damages).
+That is because if the customer has children with age below 14 years old he is more probable to drive safely. Otherwise, if customer has no children and is of age up to 25 years old he might be driving recklessly and effectively create damage to other vehicle (generate claim and we have to pay for the damages).
 
 With its analytics it is able to:
 1. Inform about conversion rates for particular product configurations (e.g. configuration with question about driving style versus question about children). This will be a killer feature for my business since I will get clear insights on what strategies of data procurement yield more profits.
 
-### Forms Definitions
+#### Forms Definitions
 Schema for forms' UI that is being rendered on the frontend app.
 Such form is used to procure all data needed for:
 1. Risk assessment during quotation (using tarrification/pricing module).
@@ -60,14 +72,14 @@ Such form is used to procure all data needed for:
 
 Filled form is used as an input for Offering Module.
 
-## Data enrichment / data transformation
+### Data enrichment / data transformation
 It's a pipe or a transformer that takes initial context and filled form as input and return output after querying external databases and services. Output from this module is input for Offering module that is needed to calculate price.
 E.g. form asks user to fill in the VIN number, but underneath we query 3rd party services about this VIN number and get insigts about this vehicle to properly assess risks.
 
 This module needs to be able to run transformation rules partially or in isolation and aggregate deeper context and knowledge. Representation of such context accumulation needs to be available to forms since they are dynamic and contextual.
 E.g if customer is an organization we run query to government services by the taxpayer identification number and if response reveals something shady about this organization, we would need to ask more questions to mitigate risks while still be able to create an offering to the customer. It means that some questions are conditional of some data transformations.
 
-## Offering
+### Offering
 Model of all available options, additional insurances, additional options for chosen insurances.
 This model is designed to be interacted with. It awaits changes in insurance scope to inform about price changes and benefits of such changes. It is the heart of this product's sales and intelligent advisor for insurance agents, insurer's call center employees or direct customers.
 
@@ -82,7 +94,7 @@ Offering model collects all data of its sales and runs analytics over the data t
 1. 80% of customers that bought this isurance, also added this option to get optimal protection.
 2. 70% of customers that were insuring a vehicle of this class (based on vehicle worth) were happy with these options to get optimal protection.
 
-## Checkout
+### Checkout
 Checkout module is the finalization of sales. Getting to this stage means customer has accepted the offering - isurance scope, terms, chose all interesting options and is now ready to finalize transaction (pay for his insurance). 
 
 At this stage we:
