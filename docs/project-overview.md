@@ -1,5 +1,3 @@
-# MOTOR Insurance Sales
-
 # Project Overview
 This is an IT project for insurance company that is under digital transformation.
 Aim of this project is to rewrite existing legacy MOTOR insurance calculator (sales tool) to new tech stack. Product is now long time on the market and with deep knowledge of this business due to its' history might be able to redesign system's architecture for a lot more alignment with business needs and company's strategy.
@@ -30,44 +28,43 @@ Every type of user has certain needs but we also decide what functionalities or 
 13. Ability to enrich and transform data from user's form using 3rd party services from government, data providers and our internal shared services e.g. customer repository, customer and agent scoring etc.
 14. System needs to be highly extensible when we will either discover new sales strategies or get access to new data sources. This will result in new rules to be applied on the offering and recommendation algorithms.
 15. Module that handles form with questions needs to be highly configurable since this changes frequently. Tariff team often comes up with suggestions on new strategies to ask smart questions that give us insights for risk assessment.
-
 # Architecture
 ## General assumptions
 - Focused on clear module boundaries. Separation around business capabilities. That will assure consistent long-term development velocity and ability to scale independently if this product brings more revenue to the table.
-  - You could pretty much say it's aligned with Domain-Driven Design.
-- Integration patterns are 
+    - You could pretty much say it's aligned with Domain-Driven Design.
+- Integration patterns are
 - Each module will have its own database schema, but not own database. This level of isolation brings more cohesion between modules and still enables us to extract to separate databases in the future.
 
 ## System's limitations and its environment
 ### TIA - Core Policy Management System
 Our most significant limitation is upstream core policy management system called TIA.
 
-   - Technically it's Oracle DBMS.
-   - It owns a large part of product's logic in its PL/SQL code including. It serves as an application layer.
-   - It owns partial configuration of the product, dictionaries that have enumerations of customer types, vehicle types, vehicle configurations including makes and models.
-   - It serves as a proxy to the pricing engine, Earnix.
-   - We integrate directly with this Oracle database as it is our **core policy management system** called "TIA", but we don't directly integrate with Earnix. TIA does it on our behalf when given particular action to execute eg. "calculateQuotation".
+- Technically it's Oracle DBMS.
+- It owns a large part of product's logic in its PL/SQL code including. It serves as an application layer.
+- It owns partial configuration of the product, dictionaries that have enumerations of customer types, vehicle types, vehicle configurations including makes and models.
+- It serves as a proxy to the pricing engine, Earnix.
+- We integrate directly with this Oracle database as it is our **core policy management system** called "TIA", but we don't directly integrate with Earnix. TIA does it on our behalf when given particular action to execute eg. "calculateQuotation".
 
 ### 3rd party services
 1. UFG - Ubezpieczeniowy Fundusz Gwarancyjny. Polish financial and insurance regulator's API service which provides claims history or insurance status of vehicles.
 2. CEPiK - Centralna Ewidencja Pojazdów i Kierowców.
-   - API service providing information about:
-     - Vehicles data, vehicle history vehicle ownership
-     - Driver's data, driver's penalty points, driver licenses
-   - Owned by Polish government.
-3. GUS - Główny Urząd Statystyczny. API service providing information about organizations in Poland. It is needed during sales for when customer is organizational. We check credibility of such organization and its business profile to check if vehicles won't be used for risky operations e.g. people transportation. Risk is then much higher than using such vehicle for daily commute.  
+    - API service providing information about:
+        - Vehicles data, vehicle history vehicle ownership
+        - Driver's data, driver's penalty points, driver licenses
+    - Owned by Polish government.
+3. GUS - Główny Urząd Statystyczny. API service providing information about organizations in Poland. It is needed during sales for when customer is organizational. We check credibility of such organization and its business profile to check if vehicles won't be used for risky operations e.g. people transportation. Risk is then much higher than using such vehicle for daily commute.
 
 ## Modules / Sub-domains
 Modules are designed around business capabilities.
 
 ### Product Configuration
 Built around risk assessment and fitting future offerings to particular customer needs.
-Consequence of every product configuration change is new form definition that frontend will render for user to interact with.
+Consequence of every product configuration change is new form definition that frontend will render for user to inter act with.
 
 Example:
 We want to get information about vehicle usage to properly calculate risk (possibility of creating a claim).
 In order to do this, we could directly ask if the customer is driving safely and responsibly or recklessly and aggressively.
-We bet that almost every client would answer they drive safely. They would anticipate higher price for insurance if they answered otherwise. 
+We bet that almost every client would answer they drive safely. They would anticipate higher price for insurance if they answered otherwise.
 
 On the other side we could ask if customer has children and what age are the children.
 That is because if the customer has children with age below 14 years old he is more probable to drive safely. Otherwise, if customer has no children and is of age up to 25 years old he might be driving recklessly and effectively create damage to other vehicle (generate claim and we have to pay for the damages).
@@ -99,20 +96,20 @@ Offering model is able to answer questions like:
 2. What will be the price if I take this additional risk to this insurance?
 3. What will be the price if I change risk sum for this particular risk?
 4. What would be optimal insurance scope for this customer or what would be such customer eager to buy?
-   - Disclaimer: it would need additional data about client segmentation and/or scoring. E.g. if we have knowledge that this customer has history of insuring vehicles with notable value or that customer already has several insurances for his estates, then we have a clear insight that this might be a wealthy customer who will prioritize more protection and larger insurance sums despite higher price.
+    - Disclaimer: it would need additional data about client segmentation and/or scoring. E.g. if we have knowledge that this customer has history of insuring vehicles with notable value or that customer already has several insurances for his estates, then we have a clear insight that this might be a wealthy customer who will prioritize more protection and larger insurance sums despite higher price.
 
 Offering model collects all data of its sales and runs analytics over the data to gain insights with which it is able to give such recommendations:
 1. 80% of customers that bought this isurance, also added this option to get optimal protection.
 2. 70% of customers that were insuring a vehicle of this class (based on vehicle worth) were happy with these options to get optimal protection.
 
 ### Checkout
-Checkout module is the finalization of sales. Getting to this stage means customer has accepted the offering - isurance scope, terms, chose all interesting options and is now ready to finalize transaction (pay for his insurance). 
+Checkout module is the finalization of sales. Getting to this stage means customer has accepted the offering - isurance scope, terms, chose all interesting options and is now ready to finalize transaction (pay for his insurance).
 
 At this stage we:
 1. Gather additional data for after-sales care and operations. We pass this information to core policy system.
 2. Handle the payment.
 3. Print insurance policy documents.
-   - We use existing, external module for this.
+    - We use existing, external module for this.
 4. Gather agreements for marketing contact.
 
 ---
