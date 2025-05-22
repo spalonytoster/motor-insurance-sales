@@ -1,14 +1,17 @@
 package com.example.motorinsurancesales.offering;
 
+import com.example.motorinsurancesales.offering.DomainEvents.AvailabilityCalculated;
 import com.example.motorinsurancesales.offering.DomainEvents.OfferAccepted;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
+// Current problem to solve: how to run concurrent offering simulations?
+// price simulations and operations on a single offering?
+// multiple offerings initialized with same CalculationContext? what's better? need to discover sensible metrics to rate solution
 class Offering {
 
-    ApplicationEventPublisher eventPublisher;
-
+    List<DomainEvents> events;
     List<InsuranceCoverage> reachableCoverageOptions;
 
 
@@ -16,6 +19,7 @@ class Offering {
         // call Earnix via TIA
         // union coverage option types from all profiles
         // every coverage option has traits from ProfileId as requirements to be available
+        events.add(new AvailabilityCalculated());
     }
 
     void applyDiscount() {
@@ -29,6 +33,10 @@ class Offering {
         // but then does checkout need to know about discounts??? that's a very bad idea)
     }
 
+    // UX-wise - possible to list some coverage options that customer might be interested in
+    // this we might use to find best matching InsuranceProfile
+    // domain-wise it's APK...
+    // so better to
     void selectCoverageOption() {
 
     }
@@ -40,6 +48,6 @@ class Offering {
     }
 
     void acceptOffer() {
-        eventPublisher.publishEvent(new OfferAccepted());
+        events.add(new OfferAccepted());
     }
 }
