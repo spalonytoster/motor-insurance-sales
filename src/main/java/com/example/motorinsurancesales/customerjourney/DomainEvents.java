@@ -5,8 +5,13 @@ import com.example.motorinsurancesales.dataprocurement.CalculationContext;
 /**
  * These events are higher level events as they give insights on sales overall and will feed analytics.
  * Contrary to each modules' internal events, these events' purpose is not to be able to rebuild state.
+ *
+ * CustomerJourney events are exposed to sub-domains to emit them.
+ * Not sure if it's good though. I think it would be better for CustomerJourney to depend on it's sub-modules.
+ * It's already heavily dependent on those whereas sub-domains can remain independent for potential extraction to microservices.
+ * If so, events `CalculationContextDataSubmitted`, `OfferAccepted`, `CheckoutComplete` should be moved inwards to their corresponding sum-domain.
  */
-interface DomainEvents {
+public interface DomainEvents {
     record SalesCreated() implements DomainEvents {} // for omnichannel metrics
     record SalesResumed() implements DomainEvents {} // for omnichannel metrics
     record SalesChannelChanged() implements DomainEvents {} // for omnichannel metrics. it's a synthetic domain event just for analytics. it's triggered by SalesCreated event on the condition
