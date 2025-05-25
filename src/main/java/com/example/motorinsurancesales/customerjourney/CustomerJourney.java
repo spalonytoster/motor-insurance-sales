@@ -38,7 +38,8 @@ class CustomerJourney {
         this.calculationContext = event.calculationContext();
         events.add(event);
 
-
+        this.offering = new Offering();
+        offering.init(event.calculationContext());
     }
 
     // triggered by expired tomcat session

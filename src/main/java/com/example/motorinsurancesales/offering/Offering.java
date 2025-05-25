@@ -1,5 +1,6 @@
 package com.example.motorinsurancesales.offering;
 
+import com.example.motorinsurancesales.dataprocurement.CalculationContext;
 import com.example.motorinsurancesales.offering.DomainEvents.AvailabilityCalculated;
 import com.example.motorinsurancesales.offering.DomainEvents.OfferAccepted;
 
@@ -12,14 +13,24 @@ import java.util.List;
 // the name Offering has been chosen instead of Quotation to differentiate from quotation as a pre-policy entity in TIA
 public class Offering {
 
+    private PricingEngineService pricingEngineService;
+
+    private CalculationContext calculationContext;
     List<DomainEvents> events;
     List<InsuranceCoverage> reachableCoverageOptions;
 
+    public void init(CalculationContext calculationContext) {
+        this.calculationContext = calculationContext;
 
-    void calculateAvailableCoverageOptions() {
+        // initical query to pricing engine
+        calculateAvailableCoverageOptions(calculationContext);
+    }
+
+    void calculateAvailableCoverageOptions(CalculationContext calculationContext) {
         // call Earnix via TIA
         // union coverage option types from all profiles
         // every coverage option has traits from ProfileId as requirements to be available
+        pricingEngineService.calculateOptionsAndPricing(calculationContext);
         events.add(new AvailabilityCalculated());
     }
 
@@ -51,4 +62,5 @@ public class Offering {
     void acceptOffer() {
         events.add(new OfferAccepted());
     }
+
 }

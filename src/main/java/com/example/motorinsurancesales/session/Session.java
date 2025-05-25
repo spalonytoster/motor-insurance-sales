@@ -8,5 +8,6 @@ package com.example.motorinsurancesales.session;
 // a significant challenge would be splitting offering into smaller aggregates though. not sure if possible.
 
 // invariant here is that there cannot be 2 sessions for the same CustomerJourney
+// it would be also great if we implemented an abandoned sales recognition - matching attempt to start new sales with existing unfinished sales for the same customer
 class Session {
 }
