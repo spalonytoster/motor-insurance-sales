@@ -1,6 +1,6 @@
 package com.example.motorinsurancesales.dataprocurement.enrichment;
 
-record TransformationResult<T>(
+public record TransformationResult<T>(
         String status,
         T data
 ) {

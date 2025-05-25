@@ -9,7 +9,7 @@ import java.util.List;
 // Current problem to solve: how to run concurrent offering simulations?
 // price simulations and operations on a single offering?
 // multiple offerings initialized with same CalculationContext? what's better? need to discover sensible metrics to rate solution
-class Offering {
+public class Offering {
 
     List<DomainEvents> events;
     List<InsuranceCoverage> reachableCoverageOptions;
