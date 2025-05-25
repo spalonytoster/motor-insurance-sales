@@ -2,13 +2,14 @@ package com.example.motorinsurancesales.offering;
 
 import com.example.motorinsurancesales.offering.DomainEvents.AvailabilityCalculated;
 import com.example.motorinsurancesales.offering.DomainEvents.OfferAccepted;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
 // Current problem to solve: how to run concurrent offering simulations?
 // price simulations and operations on a single offering?
 // multiple offerings initialized with same CalculationContext? what's better? need to discover sensible metrics to rate solution
+
+// the name Offering has been chosen instead of Quotation to differentiate from quotation as a pre-policy entity in TIA
 public class Offering {
 
     List<DomainEvents> events;

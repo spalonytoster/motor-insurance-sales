@@ -1,5 +1,7 @@
 package com.example.motorinsurancesales.customerjourney;
 
+import com.example.motorinsurancesales.customerjourney.DomainEvents.CalculationContextDataSubmitted;
+import com.example.motorinsurancesales.customerjourney.DomainEvents.SalesAbandoned;
 import com.example.motorinsurancesales.dataprocurement.CalculationContext;
 import com.example.motorinsurancesales.offering.Offering;
 import org.springframework.context.event.EventListener;
@@ -24,12 +26,26 @@ class CustomerJourney {
     CalculationContext calculationContext;
     Offering offering;
 
+    // entry point
+    void startNewSales() {}
 
+    // entry point
+    void resumeSales() {}
+
+    // indicated that data procurement sub-process (1st step) has completed
     @EventListener
-    void handleUserHasFilledAllRequiredData(CalculationContext calculationContext) {
-        this.calculationContext = calculationContext;
-//        events.add(Domain)
+    void handleUserHasFilledAllRequiredData(CalculationContextDataSubmitted event) {
+        this.calculationContext = event.calculationContext();
+        events.add(event);
+
+
     }
 
-    void changeSalesChannel() {}
+    // triggered by expired tomcat session
+    void pauseSales() {
+        events.add(new SalesAbandoned());
+    }
+
+    // scheduler will invoke this on expired sales that it found
+    void archiveExpiredSales() {}
 }
