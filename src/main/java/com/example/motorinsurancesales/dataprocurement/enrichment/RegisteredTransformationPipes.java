@@ -8,7 +8,7 @@ import java.util.Map;
 
 class RegisteredTransformationPipes {
 
-    private static final Map<Class<Input>, TransformationPipe<Input, Output>> PIPES = Map.of(
+    private static final Map<Class<? extends Input>, TransformationPipe<? extends Input, ? extends Output>> PIPES = Map.of(
             VIN.class, new VINTransformer(),
             PESEL.class, new CustomerHistoryByPesel()
     );

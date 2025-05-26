@@ -1,16 +1,17 @@
 package com.example.motorinsurancesales.customerjourney;
 
-import com.example.motorinsurancesales.customerjourney.DomainEvents.CalculationContextDataSubmitted;
-import com.example.motorinsurancesales.customerjourney.DomainEvents.SalesAbandoned;
+import com.example.motorinsurancesales.customerjourney.DomainEvent.CalculationContextDataSubmitted;
+import com.example.motorinsurancesales.customerjourney.DomainEvent.SalesAbandoned;
 import com.example.motorinsurancesales.dataprocurement.CalculationContext;
 import com.example.motorinsurancesales.offering.Offering;
+import com.example.motorinsurancesales.session.DomainEvent.SessionExpired;
 import org.springframework.context.event.EventListener;
 
 import java.util.List;
 
 // this might be whole process orchestrator on higher level
 // could possibly oversee the whole sales process and emit events regarding all changes to the process itself
-// that should be the main aggreage connecting references to other aggregates representing user data inputs, offerings, checkout
+// that should be the main aggregate connecting references to other aggregates representing user data inputs, offerings, checkout
 
 
 // some idea to implement this is to emit events from sub-domains and catch them here to run commands starting sub-processes in these sub-domains
@@ -19,7 +20,7 @@ import java.util.List;
 // not sure about it.
 // sales channel should but user context like agent context or cc context??
 class CustomerJourney {
-    List<DomainEvents> events;
+    List<DomainEvent> events;
 
     SalesChannel salesChannel;
 
@@ -42,8 +43,8 @@ class CustomerJourney {
         offering.init(event.calculationContext());
     }
 
-    // triggered by expired tomcat session
-    void pauseSales() {
+    @EventListener
+    void pauseSales(SessionExpired event) {
         events.add(new SalesAbandoned());
     }
 

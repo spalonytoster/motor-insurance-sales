@@ -11,4 +11,3 @@ class VINTransformer implements TransformationPipe<VIN, VehicleData> {
         return null;
     }
 }
-

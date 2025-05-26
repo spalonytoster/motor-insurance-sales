@@ -1,8 +1,8 @@
 package com.example.motorinsurancesales.offering;
 
 import com.example.motorinsurancesales.dataprocurement.CalculationContext;
-import com.example.motorinsurancesales.offering.DomainEvents.AvailabilityCalculated;
-import com.example.motorinsurancesales.offering.DomainEvents.OfferAccepted;
+import com.example.motorinsurancesales.offering.DomainEvent.AvailabilityCalculated;
+import com.example.motorinsurancesales.offering.DomainEvent.OfferAccepted;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class Offering {
     private PricingEngineService pricingEngineService;
 
     private CalculationContext calculationContext;
-    List<DomainEvents> events;
+    List<DomainEvent> events;
     List<InsuranceCoverage> reachableCoverageOptions;
 
     public void init(CalculationContext calculationContext) {
