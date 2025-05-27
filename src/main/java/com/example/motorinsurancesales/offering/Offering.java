@@ -22,8 +22,8 @@ public class Offering {
     public void init(CalculationContext calculationContext) {
         this.calculationContext = calculationContext;
 
-        // initical query to pricing engine
-        calculateAvailableCoverageOptions(calculationContext);
+        // initial query to pricing engine
+        var profiles = calculateAvailableCoverageOptions(calculationContext);
     }
 
     void calculateAvailableCoverageOptions(CalculationContext calculationContext) {

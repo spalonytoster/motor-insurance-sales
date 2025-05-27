@@ -1,2 +1,9 @@
 # TODO
-1. Document domain language and domain events
+1. All entities will be cached in session caches for now. Implemented by hashmaps.
+2. All facades and services are based on entity ids. E.g. when interacting with data procurement form, need to specify formId everytime. It should be connected to customer journey to update it when data procurement is complete.
+3. Aggregate should only do consistency. We shouldn't have whole offering inside CustomerJourney. CustomerJourney aggregate should only keep references to procurement and offering (and checkout? maybe only keep states of checkout and treat checkout as capability?).
+4. Should journey communicate with offering via mediator? Or with events? No, shouldn't be events because procurement would need to rely on master process' state. It's better if procurement is also a capability that we run commands on (via mediator).
+5. But procurement will then change state. Should we update journey everytime? Or do we ditch event sourcing for this part and just keep one reference and modify procurement entity state (overwrite)?
+6. But then this problem will occur on Offering. With every change on offering, should we update on journey? That seems reasonable. But then Procurement can do the same. Everytime something changes we can update state on journey according to event from procurement.
+7. Soooo... journey (as entry-point) should create new procurement form entity with mediator and return it's id for further interactions. Then everytime the form changes, it emits event that updated journey's id of procurement form.
+8. So CustomerJourney as aggregate only needs to change its state. These are consequences of the facade/service working. The CustomerJourneyFacade/Service will be calling commands on other domains using mediators.

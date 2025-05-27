@@ -22,10 +22,14 @@ import java.util.List;
 class CustomerJourney {
     List<DomainEvent> events;
 
+    String procurementId;
+    String offeringId;
+    String checkoutId;
+
     SalesChannel salesChannel;
 
-    CalculationContext calculationContext;
-    Offering offering;
+//    CalculationContext calculationContext;
+//    Offering offering;
 
     // entry point
     void startNewSales() {}

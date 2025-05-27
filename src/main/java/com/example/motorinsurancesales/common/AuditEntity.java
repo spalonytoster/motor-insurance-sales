@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
+// @MappedSuperclass
+// @EntityListeners(AuditingEntityListener.class)
 public class AuditEntity {
 
     @CreatedDate
