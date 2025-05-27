@@ -1,4 +1,4 @@
-package com.example.motorinsurancesales.underwritingcase.infrastructure;
+package com.example.motorinsurancesales.underwritingcases.infrastructure;
 
 /**
  * Mapper from TIA schema to domain model

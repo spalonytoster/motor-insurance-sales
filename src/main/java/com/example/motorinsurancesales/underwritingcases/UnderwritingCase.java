@@ -1,4 +1,4 @@
-package com.example.motorinsurancesales.underwritingcase;
+package com.example.motorinsurancesales.underwritingcases;
 
 /**
  * Domain model for representing an underwriting case
