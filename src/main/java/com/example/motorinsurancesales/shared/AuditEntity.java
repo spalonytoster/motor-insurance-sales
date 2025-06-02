@@ -1,4 +1,4 @@
-package com.example.motorinsurancesales.common;
+package com.example.motorinsurancesales.shared;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;

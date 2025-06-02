@@ -1,4 +1,4 @@
-package com.example.motorinsurancesales.common.tia.dictionaries;
+package com.example.motorinsurancesales.shared;
 
 ///
 /// no i tera świetne pytanie:

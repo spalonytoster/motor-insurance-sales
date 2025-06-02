@@ -1,8 +1,7 @@
 package com.example.motorinsurancesales.offering;
 
 import com.example.motorinsurancesales.dataprocurement.CalculationContext;
-import com.example.motorinsurancesales.underwritingcases.UnderwritingCaseException;
-import lombok.SneakyThrows;
+import com.example.motorinsurancesales.shared.underwritingcases.UnderwritingCaseException;
 
 import java.util.List;
 import java.util.Optional;

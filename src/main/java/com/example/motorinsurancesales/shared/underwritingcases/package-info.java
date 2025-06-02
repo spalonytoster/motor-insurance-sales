@@ -13,4 +13,4 @@
 /// I only want to reuse some infrastructure part of Cases domain.
 ///
 ///
-package com.example.motorinsurancesales.underwritingcases;
+package com.example.motorinsurancesales.shared.underwritingcases;

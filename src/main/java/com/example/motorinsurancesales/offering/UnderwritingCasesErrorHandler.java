@@ -1,7 +1,7 @@
 package com.example.motorinsurancesales.offering;
 
-import com.example.motorinsurancesales.common.errors.ApiErrorDetails;
-import com.example.motorinsurancesales.underwritingcases.UnderwritingCaseException;
+import com.example.motorinsurancesales.shared.errors.ApiErrorDetails;
+import com.example.motorinsurancesales.shared.underwritingcases.UnderwritingCaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

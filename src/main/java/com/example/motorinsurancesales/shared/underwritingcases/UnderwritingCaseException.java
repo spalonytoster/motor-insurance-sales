@@ -1,4 +1,4 @@
-package com.example.motorinsurancesales.underwritingcases;
+package com.example.motorinsurancesales.shared.underwritingcases;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.example.motorinsurancesales.common.errors;
+package com.example.motorinsurancesales.shared.errors;
 
 import lombok.Builder;
 import lombok.Getter;
